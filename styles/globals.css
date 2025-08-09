@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-primary: #62bfae;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color:lightblue;
+}
+
+body ::selection{
+  background-color:lightcyan;
+}
