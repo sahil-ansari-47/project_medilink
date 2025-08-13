@@ -7,12 +7,16 @@ const Nav = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const icons = ["/assets/Logo.png", "/icons/doctor.svg", "/icons/hospital.svg"];
+  const icons = [
+    "/assets/Logo.png",
+    "/icons/doctor.svg",
+    "/icons/hospital.svg",
+  ];
   const labels = ["", "Doctors", "Hospitals"];
   const paths = ["/", "/doctors", "/hospitals"];
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-primary rounded-t-3xl shadow-lg z-20">
+    <nav className="md:hidden fixed bottom-0 left-0 w-full bg-primary rounded-t-3xl shadow-lg z-20">
       <div className="flex justify-around items-center h-20">
         {icons.map((icon, index) => {
           const isActive = pathname === paths[index];
@@ -63,3 +67,39 @@ const Nav = () => {
 };
 
 export default Nav;
+{
+  /* <nav className="hidden sm:flex fixed top-15 left-0 w-full bg-primary shadow-md z-20 px-8 h-16 items-center justify-between">
+        
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => router.push("/")}
+        >
+          <Image src={icons[0]} alt="logo" width={48} height={48} />
+          <span className="text-lg font-bold text-emerald-900">medi-link <sup>&copy;</sup></span>
+        </div>
+        <div className="flex gap-8">
+          {paths.slice(1).map((path, index) => {
+            const isActive = pathname === path;
+            return (
+              <div
+                key={index + 1}
+                className={`flex items-center gap-2 cursor-pointer transition-colors duration-200 ${
+                  isActive
+                    ? "text-emerald-950 font-semibold"
+                    : "text-emerald-900 hover:text-emerald-950"
+                }`}
+                onClick={() => router.push(path)}
+              >
+                <Image
+                  src={icons[index + 1]}
+                  alt={labels[index + 1]}
+                  width={24}
+                  height={24}
+                />
+                <span>{labels[index + 1]}</span>
+              </div>
+            );
+          })}
+        </div>
+      </nav> */
+}

@@ -1,13 +1,29 @@
 "use client";
 
+import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { signOut, useSession } from "next-auth/react";
+import Image from "@node_modules/next/image";
+import { usePathname, useRouter } from "next/navigation";
+
+const icons = [
+  "/icons/doctor.svg",
+  "/icons/hospital.svg",
+  "/icons/contact.svg",
+  "/icons/ambulance.svg",
+];
+const labels = ["Doctors", "Hospitals", "Contact Us", "Book An Ambulance"];
+const paths = ["/doctors", "/hospitals", "/contact", "/ambulance"];
 
 const Header = () => {
-  const user = {};
+  const router = useRouter();
+  const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef();
+
+  const { data: session } = useSession();
 
   // Disable scroll when drawer is open
   useEffect(() => {
@@ -21,62 +37,119 @@ const Header = () => {
         setDropdownOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   return (
     <>
       {/* Header Bar */}
-      <header className="sticky top-0 flex justify-between items-center p-4 bg-primary shadow-md z-20 w-full">
+      <header className="sticky top-0 flex justify-between items-center px-4 bg-primary shadow-md z-20 w-full h-[10vh] md:shadow-none">
         {/* Hamburger / Back icon */}
-        {!drawerOpen && (
+
+        <div className="flex items-center gap-6">
           <img
             className="size-10 hover:scale-105 cursor-pointer"
             src="/icons/hamburger.svg"
             alt="menu"
             onClick={() => setDrawerOpen(true)}
           />
-        )}
-
+          {pathname !== "/" && (
+            <p
+              className="hidden md:block text-lg text-emerald-900 font-semibold cursor-pointer hover:text"
+              onClick={() => router.push("/")}
+            >
+              Back to Home
+            </p>
+          )}
+        </div>
         {/* Title */}
-        <h1 className="text-2xl font-bold text-emerald-900 drop-shadow-md cursor-pointer hover:scale-105">
+        <h1
+          className="text-2xl font-bold md:hidden text-emerald-900 drop-shadow-zinc-800 cursor-pointer hover:drop-shadow-md active:scale-[1.05]"
+          onClick={() => router.push("/")}
+        >
           medi-link <sup>&copy;</sup>
         </h1>
+        <div className="flex justify-end items-center h-full">
+          <nav className="hidden md:flex h-full">
+            {labels.map((label, index) => {
+              const isActive = pathname === paths[index];
+              return (
+                <React.Fragment key={index}>
+                  <div
+                    onClick={() => router.push(paths[index])}
+                    className={`flex items-center cursor-pointer group px-4 ${
+                      isActive && index !== 3 && "bg-white"
+                    } ${index === 3 && "hidden lg:flex bg-red-950"}`}
+                  >
+                    <Image
+                      src={icons[index]}
+                      alt={`tab-${index}`}
+                      width={30}
+                      height={30}
+                      className={`transition-transform duration-200 transform ${
+                        !isActive && "group-hover:scale-105"
+                      }`}
+                    />
 
-        {/* Profile Picture + Dropdown */}
-        <div className="relative profile-dropdown" ref={dropdownRef}>
-          <img
-            src={user.picture}
-            alt="Profile"
-            className="w-10 h-10 rounded-full border mr-2 border-gray-400 cursor-pointer hover:scale-105"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-          />
-
-          {dropdownOpen &&
-            createPortal(
-              <div
-                className="absolute right-4 mt-2 w-48 bg-white border rounded shadow"
-                style={{
-                  zIndex: 9999,
-                  top: "60px",
-                  position: "fixed",
-                }}
-              >
-                <ul className="text-sm">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Profile
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    Settings
-                  </li>
-                  <li className="px-4 py-2 hover:bg-gray-100 hover:text-red-400 cursor-pointer">
-                    Logout
-                  </li>
-                </ul>
-              </div>,
-              document.body
-            )}
+                    <p
+                      className={`font-bold text-emerald-900 ${
+                        index >= 2 && "ml-1"
+                      } ${index === 3 && "text-red-400"}`}
+                    >
+                      {label}
+                    </p>
+                  </div>
+                  {/* Divider - only show if not last item */}
+                  {index < labels.length - 2 && (
+                    <div className="self-center h-8 w-[2px] rounded-full bg-emerald-900 opacity-30"></div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </nav>
+          {/* Profile Picture + Dropdown */}
+          <div className="relative profile-dropdown" ref={dropdownRef}>
+            <Image
+              src={session?.user.image || "/icons/avatar.svg"}
+              alt="Profile"
+              className="rounded-full shadow-sm shadow-zinc-800 hover:shadow-lg cursor-pointer hover:scale-105 ml-4"
+              width={40}
+              height={40}
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            />
+            {dropdownOpen &&
+              createPortal(
+                <div
+                  className="absolute right-4 mt-2 w-48 bg-white border rounded shadow"
+                  style={{
+                    zIndex: 9999,
+                    top: "60px",
+                    position: "fixed",
+                  }}
+                >
+                  <ul className="text-sm">
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      Profile
+                    </li>
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      Settings
+                    </li>
+                    <li
+                      className="px-4 py-2 text-red-400 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        console.log("clicked");
+                        signOut();
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>,
+                document.body
+              )}
+          </div>
         </div>
       </header>
 
@@ -93,27 +166,44 @@ const Header = () => {
           onClick={() => setDrawerOpen(false)}
         />
         <div className="p-4 bg-primary font-bold flex flex-col items-center">
-          <img src={user.picture} alt="Profile" className="rounded-full h-25" />
+          <Image
+            src={session?.user.image || "/icons/avatar.svg"}
+            alt="Profile"
+            className="rounded-full p-0.5 ring-3 ring-emerald-900 cursor-pointer hover:ring-emerald-950 active:translate-y-1 active:p-1"
+            width={100}
+            height={100}
+            onClick={() => {
+              setDrawerOpen(false);
+              router.push("/profile");
+            }}
+          />
+          <img
+            className="absolute size-5 transform translate-x-10 translate-y-18 cursor-pointer"
+            src="/icons/edit.svg"
+            alt=""
+          />
           <h2 className="text-lg font-semibold mt-2">
-            {user.first_name} {user.last_name}
+            {session?.user?.first_name} {session?.user?.last_name}
           </h2>
-          {user.phone_number != null ? (
+          {session?.user?.phone_number != null ? (
             <>
               <h2 className="text-md font-semibold">
-                {user.gender}, {user.age}
+                {session?.user?.gender}, {session?.user.age}
               </h2>
-              <h2 className="text-md font-semibold">+91 {user.phone_number}</h2>
+              <h2 className="text-md font-semibold">
+                +91 {session?.user?.phone_number}
+              </h2>
             </>
           ) : (
             <div className="flex flex-col items-center">
-              <h2 className="text-sm text-center font-semibold text-amber-800">
+              <h2 className="text-sm text-center font-semibold text-red-900">
                 It appears that you have not yet registered your account
               </h2>
               <button
-                className="bg-emerald-200 rounded-lg p-2 m-4 text-emerald-800 cursor-pointer hover:bg-emerald-50"
+                className="bg-emerald-200 rounded-lg p-2 m-4 text-emerald-800 cursor-pointer hover:bg-emerald-50 focus:ring-emerald-200 focus:outline-white active:translate-y-0.5"
                 onClick={() => {
-                  toggleMenu();
-                  navigate("/register");
+                  setDrawerOpen(false);
+                  router.push("/profile");
                 }}
               >
                 Register
@@ -121,26 +211,69 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="p-4">
+        <div className="">
           {/* Your drawer content here */}
-
-          <h1>Our Services</h1>
-          <p className="m-4">Consult a Doctor</p>
-          <p className="m-4">Book a Nurse</p>
-          <p className="m-4">Book an Ambulance</p>
-          <p className="m-4">Pharmacy</p>
-          <h1>Specializations</h1>
-          <p className="m-4">General Medicine</p>
-          <p className="m-4">Cardiology</p>
-          <p className="m-4">Neurology</p>
-          <p className="m-4">Gynecology</p>
-          <p className="m-4">Oncology</p>
-          <p className="m-4">Neurology</p>
-          <p className="m-4">Osteopathy</p>
-          <h1>Profile</h1>
-          <p className="m-4">Visit My Profile</p>
-          <p className="m-4">View Appointments</p>
-          <p className="m-4">Logout</p>
+          <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
+            Our Services
+          </h1>
+          <div className="menu-div">
+            <img className="size-12" src="/icons/stethos.svg" alt="" />
+            <p className="menu-p text-emerald-900">Consult a Doctor</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-12" src="/icons/nurse.svg" alt="" />
+            <p className="menu-p text-emerald-900">Book a Nurse</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-12" src="/icons/ambulance.svg" alt="" />
+            <p className="menu-p text-red-400">Book an Ambulance</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/pharmacy.svg" alt="" />
+            <p className="menu-p text-emerald-900">Pharmacy</p>
+          </div>
+          <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
+            Specializations
+          </h1>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/general.svg" alt="" />
+            <p className="menu-p text-emerald-900">General Medicine</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/heart.svg" alt="" />
+            <p className="menu-p text-emerald-900">Cardiology</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/brain.svg" alt="" />
+            <p className="menu-p text-emerald-900">Neurology</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/gyno.svg" alt="" />
+            <p className="menu-p text-emerald-900">Gynecology</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/cancer.svg" alt="" />
+            <p className="menu-p text-emerald-900">Oncology</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/bone.svg" alt="" />
+            <p className="menu-p text-emerald-900">Osteopathy</p>
+          </div>
+          <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
+            Profile
+          </h1>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/avatar.svg" alt="" />
+            <p className="menu-p text-emerald-900">Visit My Profile</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/clipboard.svg" alt="" />
+            <p className="menu-p text-emerald-900">View Appointments</p>
+          </div>
+          <div className="menu-div">
+            <img className="size-10" src="/icons/logout.svg" alt="" />
+            <p className="menu-p text-red-400">Logout</p>
+          </div>
         </div>
       </div>
 

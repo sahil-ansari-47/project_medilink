@@ -1,22 +1,28 @@
+"use client";
+
 import Link from "next/link";
-import DoctorHomeCard from "./HomeCards/DoctorHomeCard";
-import AmbulanceHomeCard from "./HomeCards/AmbulanceHomeCard";
-import PharmacyHomeCard from "./HomeCards/PharmacyHomeCard";
-import AppointmentHomeCard from "./HomeCards/AppointmentHomeCard";
+import DoctorHomeCard from "./Cards/DoctorHomeCard";
+import AmbulanceHomeCard from "./Cards/AmbulanceHomeCard";
+import PharmacyHomeCard from "./Cards/PharmacyHomeCard";
+import AppointmentHomeCard from "./Cards/AppointmentHomeCard";
+import NurseHomeCard from "./Cards/NurseHomeCard";
+import { useSession } from "@node_modules/next-auth/react";
+import Image from "next/image";
 
 const Home = () => {
+  const { data: session } = useSession();
   return (
     <div className="min-h-screen pb-24 bg-gray-50">
-      {/* Sticky Search Header */}
-      <div className="bg-primary z-10 shadow-md flex flex-col justify-between pb-8">
-        <div className="text-center my-2 flex flex-col justify-around">
-          <h1 className="text-xl font-bold text-emerald-800">Hi, Sahil!</h1>
+      <div className="bg-primary z-10 shadow-md flex justify-center md:justify-start gap-10 pb-8">
+        <Image className="hidden md:block my-2 ml-[20vw] lg:ml-[8vw]" src="/assets/Logo.png" alt="" width={100} height={100} />
+        <div className="text-center md:text-left my-2 flex flex-col justify-around">
+          <h1 className="text-xl font-bold text-emerald-800">Hi, {session?.user.first_name}!</h1>
           <p className="text-lg text-emerald-800 mt-2 animate-bounce hover:text-red-400">
             How may we help you today?
           </p>
         </div>
       </div>
-      <div className="flex justify-center transform -translate-y-6 sticky top-20 z-20">
+      <div className="flex justify-center transform -translate-y-6 sticky top-[15vh] z-20">
         <input
           type="text"
           placeholder="Search for doctors, hospitals, etc..."
@@ -49,6 +55,9 @@ const Home = () => {
           </Link>
           <Link href="/appointments">
             <AppointmentHomeCard />
+          </Link>
+          <Link href={"/nursing"}>
+            <NurseHomeCard />
           </Link>
         </>
       </div>
