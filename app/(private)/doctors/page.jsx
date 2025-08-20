@@ -15,9 +15,7 @@ export default function DoctorsList() {
 
   useEffect(() => {
     async function fetchDoctors() {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/doctors`
-      );
+      const res = await fetch("/api/doctors");
       const data = await res.json();
       setDoctors(data);
       setFilteredDoctors(data);
@@ -108,13 +106,16 @@ export default function DoctorsList() {
       </div>
 
       {/* Doctor Cards */}
-      { (specialization || search) && (
-        <div> We found {filteredDoctors.length} {}</div>
+      {(specialization || search) && (
+        <div>
+          {" "}
+          We found {filteredDoctors.length} {}
+        </div>
       )}
-      
+
       <div className="p-3 flex flex-wrap items-center justify-center gap-6 pb-10">
         {paginatedDoctors.map((doc, index) => (
-          <DoctorCard key={doc._id} doctor={doc} priority={index<=3} />
+          <DoctorCard key={doc._id} doctor={doc} priority={index <= 3} />
         ))}
       </div>
 
