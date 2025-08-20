@@ -4,7 +4,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { signOut, useSession } from "next-auth/react";
-import Image from "@node_modules/next/image";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
 const icons = [
@@ -110,14 +110,16 @@ const Header = () => {
           </nav>
           {/* Profile Picture + Dropdown */}
           <div className="relative profile-dropdown" ref={dropdownRef}>
-            <Image
-              src={session?.user.image || "/icons/avatar.svg"}
-              alt="Profile"
-              className="rounded-full shadow-sm shadow-zinc-800 hover:shadow-lg cursor-pointer hover:scale-105 ml-4"
-              width={40}
-              height={40}
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            />
+            <div className="w-10 aspect-square rounded-full overflow-hidden shadow-sm shadow-zinc-800 hover:shadow-lg cursor-pointer hover:scale-105 ml-4 transition-transform">
+              <Image
+                src={session?.user.image || "/icons/avatar.svg"}
+                alt="Profile"
+                width={40}
+                height={40}
+                className="object-cover w-full h-full"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              />
+            </div>
             {dropdownOpen &&
               createPortal(
                 <div
@@ -155,7 +157,7 @@ const Header = () => {
 
       {/* Drawer & Backdrop */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 lg:w-100 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed top-0 left-0 h-full w-64 sm:w-100 bg-white shadow-2xl transition-transform duration-300 ease-in-out z-50 ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         } overflow-y-auto custom-scrollbar`}
       >
@@ -166,19 +168,23 @@ const Header = () => {
           onClick={() => setDrawerOpen(false)}
         />
         <div className="p-4 bg-primary font-bold flex flex-col items-center">
-          <Image
-            src={session?.user.image || "/icons/avatar.svg"}
-            alt="Profile"
-            className="rounded-full p-0.5 ring-3 ring-emerald-900 cursor-pointer hover:ring-emerald-950 active:translate-y-1 active:p-1"
-            width={100}
-            height={100}
+          <div
+            className="w-25 sm:w-30 aspect-square rounded-full overflow-hidden ring-3 ring-emerald-900 cursor-pointer hover:ring-emerald-950 active:translate-y-1"
             onClick={() => {
               setDrawerOpen(false);
               router.push("/profile");
             }}
-          />
+          >
+            <Image
+              src={session?.user.image || "/icons/avatar.svg"}
+              alt="Profile"
+              width={100}
+              height={100}
+              className="object-cover w-full h-full"
+            />
+          </div>
           <img
-            className="absolute size-5 transform translate-x-10 translate-y-18 cursor-pointer"
+            className="absolute size-5 transform translate-x-9 sm:translate-x-14 translate-y-20 cursor-pointer"
             src="/icons/edit.svg"
             alt=""
           />
@@ -187,10 +193,10 @@ const Header = () => {
           </h2>
           {session?.user?.phone_number != null ? (
             <>
-              <h2 className="text-md font-semibold">
+              <h2 className="text-md font-normal">
                 {session?.user?.gender}, {session?.user.age}
               </h2>
-              <h2 className="text-md font-semibold">
+              <h2 className="text-md font-normal">
                 +91 {session?.user?.phone_number}
               </h2>
             </>
@@ -211,7 +217,7 @@ const Header = () => {
             </div>
           )}
         </div>
-        <div className="">
+        <div>
           {/* Your drawer content here */}
           <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
             Our Services

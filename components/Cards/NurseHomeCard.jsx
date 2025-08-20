@@ -1,4 +1,4 @@
-import Image from "@node_modules/next/image";
+import Image from "next/image";
 
 const NurseHomeCard = () => {
   return (

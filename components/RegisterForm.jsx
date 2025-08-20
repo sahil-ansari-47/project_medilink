@@ -1,5 +1,6 @@
 "use client";
 
+import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -96,12 +97,12 @@ const RegisterForm = () => {
       }),
     });
     if (res.ok) {
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
       router.refresh();
     } else {
       const error = await res.json();
       console.error("Error updating profile:", error);
-      alert(error.message || "Update failed");
+      toast.error("Update failed!");
     }
     router.push("/");
   };
@@ -117,21 +118,24 @@ const RegisterForm = () => {
         <div className="flex flex-col items-center mb-4">
           <div className="relative group">
             {/* Profile Image */}
-            <Image
-              className="rounded-full ring-3 ring-emerald-900 shadow-md"
-              src={imagePreview}
-              alt="Profile"
-              width={120}
-              height={120}
-            />
+            <div className="w-30 sm:w-40 aspect-square rounded-full ring-4 ring-emerald-900 shadow-md overflow-hidden">
+              <Image
+                src={imagePreview}
+                alt="Profile"
+                width={120}
+                height={120}
+                className="object-cover w-full h-full"
+                priority
+              />
+            </div>
             {/* Hover Overlay */}
             <div
-              className="absolute inset-0 bg-black rounded-full flex items-center justify-center opacity-0 group-hover:opacity-50 transition-opacity cursor-pointer"
+              className="absolute inset-0 bg-black rounded-full flex items-center justify-center opacity-30 group-hover:opacity-50 transition-opacity cursor-pointer"
               onClick={() =>
                 document.getElementById("profile-pic-input").click()
               }
             >
-              <span className="text-white font-medium">Upload</span>
+              <span className="text-white">Upload Image</span>
             </div>
           </div>
           {/* Hidden file input */}

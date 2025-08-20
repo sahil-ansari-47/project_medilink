@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@utils/database";
 import User from "@models/user";
-import { NextResponse } from "@node_modules/next/server";
+import { NextResponse } from "next/server";
 
 export async function PUT(request) {
   try {

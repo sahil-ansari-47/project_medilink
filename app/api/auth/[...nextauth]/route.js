@@ -13,9 +13,12 @@ const handler = NextAuth({
   ],
   callbacks: {
     async session({ session }) {
+      await connectToDatabase();
+
       const sessionUser = await User.findOne({
         email: session.user.email,
       });
+      if (!sessionUser) return session;
       session.user.id = sessionUser._id.toString();
       session.user.first_name = sessionUser.first_name;
       session.user.last_name = sessionUser.last_name;
@@ -24,7 +27,7 @@ const handler = NextAuth({
         session.user.address = sessionUser.address;
         session.user.phone_number = sessionUser.phone_number;
         session.user.city = sessionUser.city;
-        session.user.state= sessionUser.state;
+        session.user.state = sessionUser.state;
         session.user.age = sessionUser.age;
         session.user.gender = sessionUser.gender;
         session.user.blood_group = sessionUser.blood_group;

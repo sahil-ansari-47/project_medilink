@@ -4,21 +4,24 @@ const AppointmentSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   doctor: {
     type: Schema.Types.ObjectId,
     ref: "Doctor",
-    required: true
+    required: true,
   },
   date: { type: Date, required: true },
   time: { type: String, required: true }, // store as "HH:mm"
-  status: {
+  _status: {
     type: String,
-    enum: ["Pending", "Confirmed", "Cancelled"],
-    default: "Pending"
+    enum: ["Confirmed", "Cancelled"],
+    default: "Confirmed",
   },
-  created_at: { type: Date, default: Date.now }
+  created_at: { type: Date, default: Date.now },
 });
 
-const Appointment = models.Appointment || model("Appointment", AppointmentSchema);
+const Appointment =
+  models.Appointment || model("Appointment", AppointmentSchema);
+
+export default Appointment;

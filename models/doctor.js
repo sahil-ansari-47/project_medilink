@@ -7,16 +7,16 @@ const DoctorSchema = new Schema({
   experience: { type: Number, min: 0 },
   qualification: { type: String },
   about: { type: String },
-  image: { type: String }, // URL or file path
+  image: { type: String }, 
   hospital: {
     type: Schema.Types.ObjectId,
     ref: "Hospital",
     required: true
   },
-  available_days: { type: [String] }, // e.g. ["Monday", "Tuesday"]
-  available_start_time: { type: String }, // store as "HH:mm"
+  available_days: { type: [String] }, 
+  available_start_time: { type: String }, 
   available_end_time: { type: String },
-  slot_duration: { type: Number, min: 1 }, // minutes
+  slot_duration: { type: Number, min: 10 }, 
   fees: { type: Number, min: 0 }
 });
 

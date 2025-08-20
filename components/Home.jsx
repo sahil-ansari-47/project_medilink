@@ -6,16 +6,16 @@ import AmbulanceHomeCard from "./Cards/AmbulanceHomeCard";
 import PharmacyHomeCard from "./Cards/PharmacyHomeCard";
 import AppointmentHomeCard from "./Cards/AppointmentHomeCard";
 import NurseHomeCard from "./Cards/NurseHomeCard";
-import { useSession } from "@node_modules/next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const Home = () => {
   const { data: session } = useSession();
   return (
-    <div className="min-h-screen pb-24 bg-gray-50">
+    <div className="min-h-screen pb-24 sm:pb-10 bg-gradient-to-tr from-white to-orange-200">
       <div className="bg-primary z-10 shadow-md flex justify-center md:justify-start gap-10 pb-8">
         <Image className="hidden md:block my-2 ml-[20vw] lg:ml-[8vw]" src="/assets/Logo.png" alt="" width={100} height={100} />
-        <div className="text-center md:text-left my-2 flex flex-col justify-around">
+        <div className="text-center md:text-left my-2 mt-4 flex flex-col justify-center">
           <h1 className="text-xl font-bold text-emerald-800">Hi, {session?.user.first_name}!</h1>
           <p className="text-lg text-emerald-800 mt-2 animate-bounce hover:text-red-400">
             How may we help you today?
@@ -26,7 +26,7 @@ const Home = () => {
         <input
           type="text"
           placeholder="Search for doctors, hospitals, etc..."
-          className="w-11/12 max-w-lg max-h-10 px-4 py-2 border bg-white border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-white"
+          className="w-11/12 max-w-lg max-h-10 px-4 py-2 border bg-white border-gray-300 rounded-full focus:outline-none ring-2 focus:ring-4 ring-primary"
         />
       </div>
       {/* Optionally render search results */}
