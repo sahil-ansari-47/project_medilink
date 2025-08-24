@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Header from "@components/Header";
 import Nav from "@components/Nav";
+import Footer from "@components/Footer";
 
 const hideOn = ["/profile", "/settings"];
 
@@ -24,21 +25,24 @@ export default function PrivateLayout({ children }) {
 
   if (status === "loading") return null;
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={pathname} // important: key must be pathname
-        initial={pathname === "/profile" ? { x: 1000, opacity: 0 } : {}}
-        animate={pathname === "/profile" ? { x: 0, opacity: 1 } : {}}
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      >
-        {!shouldHide && (
-          <>
-            <Header />
-            <Nav />
-          </>
-        )}
-        <main>{children}</main>
-      </motion.div>
-    </AnimatePresence>
+    <>
+      {!shouldHide && (
+        <>
+          <Header />
+          <Nav />
+        </>
+      )}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={pathname} // important: key must be pathname
+          initial={pathname === "/profile" ? { x: 1000, opacity: 0 } : {}}
+          animate={pathname === "/profile" ? { x: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          <main>{children}</main>
+        </motion.div>
+      </AnimatePresence>
+      {!shouldHide && <Footer />}
+    </>
   );
 }

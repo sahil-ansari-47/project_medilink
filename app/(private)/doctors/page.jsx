@@ -1,24 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import DoctorCard from "@/components/Cards/DoctorCard";
 
 export default function DoctorsList() {
+  const searchParams = useSearchParams();
+  const specializations=["General Physician", "Cardiologist", "Neurologist", "Gynecologist", "Oncologist", "Orthopedist"]
   const [scrolled, setScrolled] = useState(false);
-  const [doctors, setDoctors] = useState([]);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [search, setSearch] = useState("");
-  const [specialization, setSpecialization] = useState("");
+  const [specialization, setSpecialization] = useState(
+    searchParams.get("specialization") || ""
+  );
   const [sortBy, setSortBy] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 9;
 
   useEffect(() => {
     async function fetchDoctors() {
-      const res = await fetch("/api/doctors");
+      const params = new URLSearchParams();
+
+      if (specialization) params.append("specialization", specialization);
+      if (search) params.append("search", search);
+      if (sortBy) params.append("ordering", sortBy);
+
+      const res = await fetch(`/api/doctors?${params.toString()}`);
       const data = await res.json();
-      setDoctors(data);
       setFilteredDoctors(data);
+      setPage(1);
     }
     fetchDoctors();
     const handleScroll = () => {
@@ -26,34 +36,11 @@ export default function DoctorsList() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [specialization, search, sortBy]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
-
-  useEffect(() => {
-    let updated = [...doctors];
-
-    if (search) {
-      updated = updated.filter((doc) =>
-        doc.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    if (specialization) {
-      updated = updated.filter((doc) => doc.specialization === specialization);
-    }
-
-    if (sortBy === "experience") {
-      updated.sort((a, b) => b.experience - a.experience);
-    } else if (sortBy === "fees") {
-      updated.sort((a, b) => a.fees - b.fees);
-    }
-
-    setFilteredDoctors(updated);
-    setPage(1);
-  }, [search, specialization, sortBy, doctors]);
 
   const totalPages = Math.ceil(filteredDoctors.length / pageSize);
   const paginatedDoctors = filteredDoctors.slice(
@@ -85,7 +72,7 @@ export default function DoctorsList() {
             className="border rounded px-3 py-2 flex-1 w-1/2 bg-white"
           >
             <option value="">All Specializations</option>
-            {[...new Set(doctors.map((doc) => doc.specialization))].map(
+            {specializations.map(
               (spec) => (
                 <option key={spec} value={spec}>
                   {spec}
@@ -107,15 +94,14 @@ export default function DoctorsList() {
 
       {/* Doctor Cards */}
       {(specialization || search) && (
-        <div>
-          {" "}
-          We found {filteredDoctors.length} {}
+        <div className="py-2 md:py-5 text-center text-sm md:text-left md:pl-[15vw] text-primary md:text-xl">
+          We found {filteredDoctors.length} doctors in your search...
         </div>
       )}
 
       <div className="p-3 flex flex-wrap items-center justify-center gap-6 pb-10">
         {paginatedDoctors.map((doc, index) => (
-          <DoctorCard key={doc._id} doctor={doc} priority={index <= 3} />
+          <DoctorCard key={doc._id} doctor={doc} priority={index === 1} />
         ))}
       </div>
 

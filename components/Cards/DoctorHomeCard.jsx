@@ -15,7 +15,6 @@ const DoctorHomeCard = () => {
           alt="Doctor"
           width={200}
           height={200}
-          priority
         />
       </div>
 

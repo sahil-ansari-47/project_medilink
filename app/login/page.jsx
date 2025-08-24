@@ -39,16 +39,17 @@ const Login = () => {
       <h1 className="mb-4 text-[clamp(2rem,5vw,4rem)] w-10/12 bg-gradient-to-r from-orange-500 via-white to-green-600 font-extrabold text-center text-transparent bg-clip-text drop-shadow-2xl drop-shadow-zinc-800 animate-pulse">
         "The One Stop Destination to all your medical needs!"
       </h1>
-      <div className="w-[171px] h-[40px] m-8 bg-white rounded-2xl transform hover:bg-gray-200 active:translate-y-1 transition-all duration-200 ease-in-out shadow-md shadow-zinc-800 hover:shadow-lg">
+      <div className="w-[200px] h-[40px] m-8 bg-white rounded-2xl transform hover:bg-gray-200 active:translate-y-1 transition-all duration-200 ease-in-out shadow-md shadow-zinc-800 hover:shadow-lg">
         {providers &&
           Object.values(providers).map((provider) => (
             <button
-              className="cursor-pointer w-full h-full p-2 px-4"
+              className="flex cursor-pointer w-full h-full p-2 px-4 justify-between items-center"
               key={provider.name}
               onClick={() => {
                 signIn(provider.id);
               }}
             >
+              <img className="size-5" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" alt="" />
               Sign in with {provider.name}
             </button>
           ))}

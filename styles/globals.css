@@ -20,7 +20,7 @@
     @apply font-medium text-xl ml-2;
   }
   .homecard {
-    @apply relative h-50 w-[90vw] sm:w-[80vw] md830:w-sm overflow-hidden mx-4 bg-white shadow-lg inset-shadow-sm/50 rounded-tr-2xl rounded-bl-2xl sm:h-64 transition-transform duration-300 ease-in-out cursor-pointer hover:scale-[1.02];
+    @apply relative h-50 w-[90vw] sm:w-[80vw] md830:w-xl lg:w-sm overflow-hidden mx-4 bg-white shadow-lg inset-shadow-sm/50 rounded-tr-2xl rounded-bl-4xl sm:h-64 transition-transform duration-300 ease-in-out cursor-pointer hover:scale-[1.02];
   }
   .homecard-title {
     @apply text-xl sm:text-2xl font-bold;
@@ -31,8 +31,55 @@
   .wave {
     @apply h-1/2 hidden absolute bottom-0 left-0 w-full z-0 xxs:block transform xxs:translate-y-2 xs:translate-y-0;
   }
+  .specialization {
+    @apply flex flex-col items-center bg-white rounded-2xl shadow-md py-6 hover:scale-102 hover:shadow-xl cursor-pointer transition-transform;
+  }
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes emphasis {
+  0%, 100% {
+    transform: scale(1.02) rotateX(0deg) rotateY(0deg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+  50% {
+    transform: scale(1.05) rotateX(-6deg) rotateY(-10deg) translateX(-2vw);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  }
+}
+  .fade-in-up {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  .emphasis {
+    animation: emphasis 8s ease-in-out infinite;
+  }
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: translate(50px, 50px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+  .trigger {
+    animation-name: appear;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
   .custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
+    width: 4px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;

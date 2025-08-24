@@ -16,7 +16,7 @@ const Nav = () => {
   const paths = ["/", "/doctors", "/hospitals"];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 w-full bg-primary rounded-t-3xl shadow-lg z-20">
+    <nav className="md:hidden fixed bottom-0 left-0 w-screen bg-primary rounded-t-3xl shadow-lg z-20">
       <div className="flex justify-around items-center h-20">
         {icons.map((icon, index) => {
           const isActive = pathname === paths[index];

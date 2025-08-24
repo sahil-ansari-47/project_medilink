@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 const icons = [
   "/icons/doctor.svg",
@@ -44,7 +45,7 @@ const Header = () => {
   return (
     <>
       {/* Header Bar */}
-      <header className="sticky top-0 flex justify-between items-center px-4 bg-primary shadow-md z-20 w-full h-[10vh] md:shadow-none">
+      <header className="sticky top-0 flex justify-between items-center px-4 bg-primary shadow-md z-30 w-full h-[10vh] md:shadow-none">
         {/* Hamburger / Back icon */}
 
         <div className="flex items-center gap-6">
@@ -140,8 +141,7 @@ const Header = () => {
                     <li
                       className="px-4 py-2 text-red-400 hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
-                        console.log("clicked");
-                        signOut();
+                        signOut({redirect:false});
                         setDropdownOpen(false);
                       }}
                     >
@@ -222,61 +222,133 @@ const Header = () => {
           <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
             Our Services
           </h1>
-          <div className="menu-div">
+          <Link
+            href="/doctors"
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-12" src="/icons/stethos.svg" alt="" />
             <p className="menu-p text-emerald-900">Consult a Doctor</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href="/nurse"
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-12" src="/icons/nurse.svg" alt="" />
             <p className="menu-p text-emerald-900">Book a Nurse</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href="/ambulance"
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-12" src="/icons/ambulance.svg" alt="" />
             <p className="menu-p text-red-400">Book an Ambulance</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href="/pharmacy"
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/pharmacy.svg" alt="" />
             <p className="menu-p text-emerald-900">Pharmacy</p>
-          </div>
+          </Link>
           <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
             Specializations
           </h1>
-          <div className="menu-div">
+          <Link
+            href={{
+              pathname: "/doctors",
+              query: { specialization: "General Physician" },
+            }}
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/general.svg" alt="" />
             <p className="menu-p text-emerald-900">General Medicine</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href={{
+              pathname: "/doctors",
+              query: { specialization: "Cardiologist" },
+            }}
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/heart.svg" alt="" />
             <p className="menu-p text-emerald-900">Cardiology</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href={{
+              pathname: "/doctors",
+              query: { specialization: "Neurologist" },
+            }}
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/brain.svg" alt="" />
             <p className="menu-p text-emerald-900">Neurology</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href={{
+              pathname: "/doctors",
+              query: { specialization: "Gynecologist" },
+            }}
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/gyno.svg" alt="" />
             <p className="menu-p text-emerald-900">Gynecology</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href={{
+              pathname: "/doctors",
+              query: { specialization: "Oncologist" },
+            }}
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/cancer.svg" alt="" />
             <p className="menu-p text-emerald-900">Oncology</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href={{
+              pathname: "/doctors",
+              query: { specialization: "Orthopedist" },
+            }}
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/bone.svg" alt="" />
             <p className="menu-p text-emerald-900">Osteopathy</p>
-          </div>
+          </Link>
           <h1 className="my-2 text-2xl text-emerald-900 font-bold pl-2">
             Profile
           </h1>
-          <div className="menu-div">
+          <Link
+            href="/profile"
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/avatar.svg" alt="" />
             <p className="menu-p text-emerald-900">Visit My Profile</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <Link
+            href="/appointments"
+            onClick={() => setDrawerOpen(false)}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/clipboard.svg" alt="" />
             <p className="menu-p text-emerald-900">View Appointments</p>
-          </div>
-          <div className="menu-div">
+          </Link>
+          <div
+            onClick={() => {
+              setDrawerOpen(false);
+              signOut({redirect: false});
+            }}
+            className="menu-div"
+          >
             <img className="size-10" src="/icons/logout.svg" alt="" />
             <p className="menu-p text-red-400">Logout</p>
           </div>

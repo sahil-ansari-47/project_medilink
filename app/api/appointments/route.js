@@ -1,14 +1,14 @@
 // /app/api/appointments/route.js
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/utils/database";
-import Appointment from "@/models/appointment";
+import { connectToDatabase } from "@utils/database";
+import Appointment from "@models/appointment";
 
 // CREATE appointment
 export async function POST(req) {
   try {
     await connectToDatabase();
     const body = await req.json();
-    const { patient_id, doctor_id, date, time} = body;
+    const { patient_id, doctor_id, date, time } = body;
 
     if (!patient_id || !doctor_id || !date || !time) {
       return NextResponse.json(
@@ -26,32 +26,26 @@ export async function POST(req) {
       created_at: new Date(),
     });
 
-    return NextResponse.json(
-      { success: true, appointment },
-      { status: 201 }
-    );
+    return NextResponse.json({ success: true, appointment }, { status: 201 });
   } catch (error) {
     console.error("Error creating appointment:", error);
-    return NextResponse.json(
-      { error: "Server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
 
-// GET all appointments
 export async function GET() {
+  await connectToDatabase();
+
   try {
-    await connectToDatabase();
-    const appointments = await Appointment.find()
-      .populate("user", "first_name last_name email") // adjust fields as per your User schema
+    const appointments = await Appointment.find({})
+      .populate("user", "name email")
       .populate("doctor", "name specialization");
 
-    return NextResponse.json({ success: true, appointments });
+    return NextResponse.json(appointments, { status: 200 });
   } catch (error) {
     console.error("Error fetching appointments:", error);
     return NextResponse.json(
-      { error: "Server error" },
+      { message: "Error fetching appointments" },
       { status: 500 }
     );
   }

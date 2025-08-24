@@ -78,8 +78,8 @@ export default function DoctorDetail() {
   }
 
   if (loading)
-    return <div className="p-6 text-center">Loading doctor details...</div>;
-  if (!doctor) return <div className="p-6 text-center">Doctor not found</div>;
+    return <div className="p-6 text-center min-h-screen">Loading doctor details...</div>;
+  if (!doctor) return <div className="p-6 text-center min-h-screen">Doctor not found</div>;
 
   const nextDates = getNextAvailableDates(doctor.available_days || []);
 
@@ -124,7 +124,7 @@ export default function DoctorDetail() {
             subject: "Appointment Confirmation",
             html: `
             <p>Hello ${session.user.first_name},</p>
-            <p>Your appointment has been successfully booked with <b>Dr. ${
+            <p>Your appointment has been successfully booked with <b>${
               doctor.name
             }</b><br/>on <b>${new Date(
               appointmentDate

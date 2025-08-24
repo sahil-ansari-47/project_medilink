@@ -15,7 +15,6 @@ const PharmacyHomeCard = () => {
           alt="Doctor"
           width={500}
           height={500}
-          priority
         />
       </div>
 

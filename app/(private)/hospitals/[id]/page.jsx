@@ -55,7 +55,7 @@ export default function HospitalDetailPage() {
   if (!hospital) return <p className="p-4">Loading...</p>;
 
   return (
-    <div className="">
+    <div className="pb-20 md:pb-0">
         <div className="p-6 max-w-5xl mx-auto">
           {/* Breadcrumbs */}
           <nav className="text-sm text-gray-600 mb-4">
@@ -118,11 +118,11 @@ export default function HospitalDetailPage() {
                 )}
               </div>
               {/* Google Maps */}
-              <div className="mt-4">
+              <div className="mt-4 h-64">
                 <iframe
                   src={hospital.location}
                   width="100%"
-                  height="300"
+                  height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"

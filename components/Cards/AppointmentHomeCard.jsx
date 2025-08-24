@@ -15,7 +15,6 @@ const AppointmentHomeCard = () => {
           alt=""
           width={200}
           height={200}
-          priority
         />
       </div>
 
