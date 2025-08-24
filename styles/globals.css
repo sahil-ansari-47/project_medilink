@@ -59,6 +59,7 @@
   }
   .emphasis {
     animation: emphasis 8s ease-in-out infinite;
+    will-change: transform;
   }
   @keyframes appear {
     from {

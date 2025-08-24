@@ -51,11 +51,12 @@ const Home = () => {
           <div className="flex-1 perspective-midrange">
             <Image
               className="object-cover w-full h-full emphasis"
-              src="/assets/home1.png"
+              src="/assets/home1-blur.png"
               alt="Medical assistance"
-              width={1000}
-              height={1000}
-              priority
+              width={800}
+              height={800}
+              placeholder="blur"
+              blurDataURL="/assets/home1-blur.png"
             />
           </div>
         </div>
@@ -66,11 +67,12 @@ const Home = () => {
           <div className="absolute inset-0 bg-black overflow-clip">
             <Image
               className="object-cover w-screen h-full blur-xs fade-in-up"
-              src="/assets/home1.png"
+              src="/assets/home1-blur.png"
               alt="Medical assistance"
-              width={1000}
-              height={1000}
-              priority
+              width={800}
+              height={800}
+              placeholder="blur"
+              blurDataURL="/assets/home1-blur.png"
             />
           </div>
           <div className="relative z-10 flex flex-col items-center justify-center h-full px-4">
@@ -82,19 +84,19 @@ const Home = () => {
 
         {/* Card Grid */}
         <div className="flex flex-wrap items-center justify-center p-10 gap-6 md:gap-y-10 overflow-x-clip">
-          <Link href="/doctors" className="trigger">
+          <Link href="/doctors" className="trigger" prefetch={false}>
             <DoctorHomeCard />
           </Link>
-          <Link href="/ambulance" className="trigger">
+          <Link href="/ambulance" className="trigger" prefetch={false}>
             <AmbulanceHomeCard />
           </Link>
-          <Link href="/pharmacy" className="trigger">
+          <Link href="/pharmacy" className="trigger" prefetch={false}>
             <PharmacyHomeCard />
           </Link>
-          <Link href="/appointments" className="trigger">
-            <AppointmentHomeCard />
+          <Link href="/appointments" className="trigger" prefetch={false}>
+            <AppointmentHomeCard /> 
           </Link>
-          <Link href={"/nursing"} className="trigger">
+          <Link href={"/nursing"} className="trigger" prefetch={false}>
             <NurseHomeCard />
           </Link>
         </div>
@@ -107,6 +109,7 @@ const Home = () => {
               query: { specialization: "General Physician" },
             }}
             className="specialization trigger"
+            prefetch={false}
           >
             <img
               src="/icons/generalr.svg"
@@ -120,6 +123,7 @@ const Home = () => {
               pathname: "/doctors",
               query: { specialization: "Cardiologist" },
             }}
+            prefetch={false}
             className="specialization trigger"
           >
             <img
@@ -134,6 +138,7 @@ const Home = () => {
               pathname: "/doctors",
               query: { specialization: "Neurologist" },
             }}
+            prefetch={false}
             className="specialization trigger"
           >
             <img
@@ -148,6 +153,7 @@ const Home = () => {
               pathname: "/doctors",
               query: { specialization: "Gynecologist" },
             }}
+            prefetch={false}
             className="specialization trigger"
           >
             <img
@@ -162,6 +168,7 @@ const Home = () => {
               pathname: "/doctors",
               query: { specialization: "Oncologist" },
             }}
+            prefetch={false}
             className="specialization trigger"
           >
             <img
@@ -176,6 +183,7 @@ const Home = () => {
               pathname: "/doctors",
               query: { specialization: "Orthopedist" },
             }}
+            prefetch={false}
             className="specialization trigger"
           >
             <img
